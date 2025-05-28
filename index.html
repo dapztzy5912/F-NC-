@@ -6,41 +6,216 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Produk Kami</title>
   <style>
-    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
-    .product { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1);}
-    img { max-width: 100%; height: auto; border-radius: 5px; }
-    h2 { margin-top: 0; }
+    body { 
+      font-family: Arial, sans-serif; 
+      padding: 20px; 
+      background: #f4f4f4; 
+      margin: 0;
+    }
+    
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    
+    .nav-links {
+      margin-top: 15px;
+    }
+    
+    .nav-links a {
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin: 0 10px;
+      display: inline-block;
+    }
+    
+    .nav-links a:hover {
+      background: #0056b3;
+    }
+    
+    .loading {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+    }
+    
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 10px 0;
+    }
+    
+    .product { 
+      background: white; 
+      padding: 20px; 
+      margin: 15px 0; 
+      border-radius: 8px; 
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    
+    .product:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+    
+    .product img { 
+      max-width: 100%; 
+      height: 200px;
+      object-fit: cover;
+      border-radius: 5px; 
+      margin: 10px 0;
+    }
+    
+    .product h2 { 
+      margin-top: 0; 
+      color: #333;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 10px;
+    }
+    
+    .price {
+      font-size: 1.3em;
+      font-weight: bold;
+      color: #28a745;
+      margin: 10px 0;
+    }
+    
+    .description {
+      color: #666;
+      line-height: 1.5;
+    }
+    
+    .no-products {
+      text-align: center;
+      padding: 40px;
+      background: white;
+      border-radius: 8px;
+      color: #666;
+    }
+    
+    .refresh-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    
+    .refresh-btn:hover {
+      background: #218838;
+    }
   </style>
 </head>
 <body>
-  <h1>Daftar Produk</h1>
-  <div id="product-list">Memuat produk...</div>
+  <div class="header">
+    <h1>🛍️ Daftar Produk Kami</h1>
+    <div class="nav-links">
+      <a href="/upload.html">➕ Tambah Produk</a>
+      <a href="#" onclick="loadProducts()">🔄 Refresh</a>
+    </div>
+  </div>
+
+  <div id="product-list" class="loading">
+    <p>⏳ Memuat produk...</p>
+  </div>
 
   <script>
+    let isLoading = false;
+
     async function loadProducts() {
-      const res = await fetch('/api/products');
-      const products = await res.json();
+      if (isLoading) return;
+      
+      isLoading = true;
       const container = document.getElementById('product-list');
-      container.innerHTML = '';
+      container.innerHTML = '<p class="loading">⏳ Memuat produk...</p>';
 
-      if (products.length === 0) {
-        container.innerHTML = '<p>Tidak ada produk tersedia.</p>';
-        return;
-      }
+      try {
+        console.log('Mengambil data produk...');
+        const response = await fetch('/api/products');
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const products = await response.json();
+        console.log('Data produk diterima:', products);
+        
+        container.innerHTML = '';
 
-      products.forEach((p, i) => {
-        const div = document.createElement('div');
-        div.className = 'product';
-        div.innerHTML = `
-          <h2>${p.title}</h2>
-          <img src="${p.image}" alt="${p.title}" />
-          <p><strong>Harga:</strong> Rp ${p.price.toLocaleString()}</p>
-          ${p.description ? `<p>${p.description}</p>` : ''}
+        if (!products || products.length === 0) {
+          container.innerHTML = `
+            <div class="no-products">
+              <h2>📦 Belum Ada Produk</h2>
+              <p>Belum ada produk yang ditambahkan.</p>
+              <a href="/upload.html" class="refresh-btn">Tambah Produk Pertama</a>
+            </div>
+          `;
+          return;
+        }
+
+        products.forEach((product, index) => {
+          const productDiv = document.createElement('div');
+          productDiv.className = 'product';
+          
+          // Pastikan semua field ada
+          const title = product.title || 'Produk Tanpa Judul';
+          const price = product.price || 0;
+          const image = product.image || 'https://via.placeholder.com/300x200?text=No+Image';
+          const description = product.description || '';
+          
+          productDiv.innerHTML = `
+            <h2>${escapeHtml(title)}</h2>
+            <img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" onerror="this.src='https://via.placeholder.com/300x200?text=Gambar+Tidak+Ditemukan'" />
+            <div class="price">💰 Rp ${Number(price).toLocaleString('id-ID')}</div>
+            ${description ? `<div class="description">${escapeHtml(description)}</div>` : ''}
+            <small style="color: #999;">Produk #${index + 1}</small>
+          `;
+          
+          container.appendChild(productDiv);
+        });
+
+        console.log(`${products.length} produk berhasil ditampilkan`);
+
+      } catch (error) {
+        console.error('Error loading products:', error);
+        container.innerHTML = `
+          <div class="error">
+            <h3>❌ Gagal Memuat Produk</h3>
+            <p>Terjadi kesalahan: ${error.message}</p>
+            <button class="refresh-btn" onclick="loadProducts()">Coba Lagi</button>
+          </div>
         `;
-        container.appendChild(div);
-      });
+      } finally {
+        isLoading = false;
+      }
     }
 
+    // Function untuk escape HTML (mencegah XSS)
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Auto refresh setiap 30 detik
+    setInterval(loadProducts, 30000);
+
+    // Load products saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', loadProducts);
+    
+    // Juga load langsung untuk backward compatibility
     loadProducts();
   </script>
 </body>
