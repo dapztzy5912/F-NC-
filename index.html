@@ -1,395 +1,47 @@
 
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toko Online - Produk Terbaik</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: #667eea;
-            border: 2px solid #667eea;
-        }
-
-        .btn-secondary:hover {
-            background: #667eea;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .hero {
-            text-align: center;
-            padding: 4rem 0;
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .products-section {
-            background: white;
-            padding: 4rem 0;
-            margin-top: 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .product-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: linear-gradient(45deg, #f0f2f5, #e1e8ed);
-        }
-
-        .product-info {
-            padding: 1.5rem;
-        }
-
-        .product-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: #333;
-        }
-
-        .product-description {
-            color: #666;
-            margin-bottom: 1rem;
-            line-height: 1.5;
-        }
-
-        .product-price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 1rem;
-        }
-
-        .product-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .btn-delete {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-delete:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 4rem 0;
-            color: #666;
-        }
-
-        .empty-state img {
-            width: 200px;
-            height: 200px;
-            opacity: 0.3;
-            margin-bottom: 2rem;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #667eea;
-        }
-
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 4rem;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .nav {
-                flex-direction: column;
-                gap: 1rem;
-            }
-            
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Produk Kami</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    .product { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1);}
+    img { max-width: 100%; height: auto; border-radius: 5px; }
+    h2 { margin-top: 0; }
+  </style>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <nav class="nav">
-                <div class="logo">🛍️ TokoKu</div>
-                <div class="nav-buttons">
-                    <a href="upload.html" class="btn btn-primary">+ Upload Produk</a>
-                    <button onclick="loadProducts()" class="btn btn-secondary">🔄 Refresh</button>
-                </div>
-            </nav>
-        </div>
-    </header>
+  <h1>Daftar Produk</h1>
+  <div id="product-list">Memuat produk...</div>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Selamat Datang di TokoKu</h1>
-            <p>Temukan produk-produk terbaik dengan harga terjangkau</p>
-        </div>
-    </section>
+  <script>
+    async function loadProducts() {
+      const res = await fetch('/api/products');
+      const products = await res.json();
+      const container = document.getElementById('product-list');
+      container.innerHTML = '';
 
-    <section class="products-section">
-        <div class="container">
-            <h2 class="section-title">Produk Kami</h2>
-            
-            <div id="loading" class="loading" style="display: none;">
-                <div class="spinner"></div>
-                <p>Memuat produk...</p>
-            </div>
+      if (products.length === 0) {
+        container.innerHTML = '<p>Tidak ada produk tersedia.</p>';
+        return;
+      }
 
-            <div id="products-container" class="products-grid">
-                <!-- Produk akan dimuat di sini -->
-            </div>
+      products.forEach((p, i) => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `
+          <h2>${p.title}</h2>
+          <img src="${p.image}" alt="${p.title}" />
+          <p><strong>Harga:</strong> Rp ${p.price.toLocaleString()}</p>
+          ${p.description ? `<p>${p.description}</p>` : ''}
+        `;
+        container.appendChild(div);
+      });
+    }
 
-            <div id="empty-state" class="empty-state" style="display: none;">
-                <div style="font-size: 4rem; margin-bottom: 1rem;">📦</div>
-                <h3>Belum ada produk</h3>
-                <p>Mulai dengan menambahkan produk pertama Anda!</p>
-                <a href="upload.html" class="btn btn-primary" style="margin-top: 1rem;">Upload Produk Pertama</a>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 TokoKu. Semua hak dilindungi.</p>
-        </div>
-    </footer>
-
-    <script>
-        const API_BASE = 'http://localhost:3000';
-
-        async function loadProducts() {
-            const loading = document.getElementById('loading');
-            const container = document.getElementById('products-container');
-            const emptyState = document.getElementById('empty-state');
-            
-            loading.style.display = 'block';
-            container.innerHTML = '';
-            emptyState.style.display = 'none';
-
-            try {
-                const response = await fetch(`${API_BASE}/api/products`);
-                const products = await response.json();
-                
-                loading.style.display = 'none';
-
-                if (products.length === 0) {
-                    emptyState.style.display = 'block';
-                    return;
-                }
-
-                products.forEach(product => {
-                    const productCard = createProductCard(product);
-                    container.appendChild(productCard);
-                });
-            } catch (error) {
-                loading.style.display = 'none';
-                console.error('Error loading products:', error);
-                container.innerHTML = `
-                    <div style="text-align: center; color: #ff6b6b; grid-column: 1/-1;">
-                        <h3>❌ Gagal memuat produk</h3>
-                        <p>Pastikan server berjalan di port 3000</p>
-                        <button onclick="loadProducts()" class="btn btn-secondary">Coba Lagi</button>
-                    </div>
-                `;
-            }
-        }
-
-        function createProductCard(product) {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            
-            const imageUrl = product.imageUrl || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200"><rect width="100%" height="100%" fill="%23f0f2f5"/><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="%23999">No Image</text></svg>';
-            
-            card.innerHTML = `
-                <img src="${imageUrl}" alt="${product.title}" class="product-image" 
-                     onerror="this.src='data:image/svg+xml,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;300&quot; height=&quot;200&quot;><rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;%23f0f2f5&quot;/><text x=&quot;50%&quot; y=&quot;50%&quot; text-anchor=&quot;middle&quot; dy=&quot;.3em&quot; fill=&quot;%23999&quot;>Gambar Error</text></svg>'">
-                <div class="product-info">
-                    <h3 class="product-title">${product.title}</h3>
-                    ${product.description ? `<p class="product-description">${product.description}</p>` : ''}
-                    <div class="product-price">Rp ${product.price.toLocaleString('id-ID')}</div>
-                    <div class="product-actions">
-                        <button onclick="deleteProduct('${product.id}')" class="btn-delete">🗑️ Hapus</button>
-                    </div>
-                </div>
-            `;
-            
-            return card;
-        }
-
-        async function deleteProduct(productId) {
-            if (!confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`${API_BASE}/api/products/${productId}`, {
-                    method: 'DELETE'
-                });
-
-                if (response.ok) {
-                    loadProducts(); // Reload products
-                } else {
-                    alert('Gagal menghapus produk');
-                }
-            } catch (error) {
-                console.error('Error deleting product:', error);
-                alert('Gagal menghapus produk');
-            }
-        }
-
-        // Load products when page loads
-        document.addEventListener('DOMContentLoaded', loadProducts);
-    </script>
+    loadProducts();
+  </script>
 </body>
 </html>
