@@ -1,0 +1,12 @@
+{
+  "name": "product-blogger",
+  "version": "1.0.0",
+  "description": "Website upload produk dengan tampilan menarik dan backend publik",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
