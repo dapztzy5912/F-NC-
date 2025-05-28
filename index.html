@@ -40,6 +40,18 @@
       background: linear-gradient(135deg, #4a4a4a 0%, #3a3a3a 100%);
     }
     
+    .buy-btn {
+      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+    }
+    
+    .buy-btn:hover {
+      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+    }
+    
     .gold-accent {
       color: #d4af37;
     }
@@ -94,6 +106,9 @@
 
   <script>
     let isLoading = false;
+    
+    // Ganti dengan nomor WhatsApp yang diinginkan (format: 628xxxxxxxxxx)
+    const WHATSAPP_NUMBER = '6285736486023'; // Ubah nomor ini sesuai kebutuhan
 
     async function loadProducts() {
       if (isLoading) return;
@@ -162,6 +177,11 @@
                 </div>
               ` : ''}
               <div class="flex justify-between items-center pt-4 border-t border-gray-800">
+                <button onclick="buyProduct('${escapeHtml(title)}', ${price})" 
+                  class="buy-btn text-white px-6 py-3 rounded-lg flex items-center space-x-2 font-semibold">
+                  <i class="fab fa-whatsapp text-lg"></i>
+                  <span>Beli Sekarang</span>
+                </button>
               </div>
             </div>
           `;
@@ -192,6 +212,34 @@
       } finally {
         isLoading = false;
       }
+    }
+
+    function buyProduct(productName, price) {
+      // Format pesan WhatsApp
+      const formattedPrice = Number(price).toLocaleString('id-ID', {
+        style: 'currency', 
+        currency: 'IDR'
+      });
+      
+      const message = `Halo kak! 😊
+
+Saya tertarik untuk membeli produk dari UCUP STORE:
+
+📦 *${productName}*
+💰 *${formattedPrice}*
+
+Apakah produk ini masih tersedia? Bisa tolong bantu proses pembeliannya?
+
+Terima kasih! 🙏`;
+      
+      // Encode pesan untuk URL
+      const encodedMessage = encodeURIComponent(message);
+      
+      // Buat URL WhatsApp
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+      
+      // Buka WhatsApp di tab baru
+      window.open(whatsappUrl, '_blank');
     }
 
     function escapeHtml(text) {
