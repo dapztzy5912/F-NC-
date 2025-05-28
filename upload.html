@@ -1,191 +1,180 @@
 
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Upload Produk</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      padding: 20px; 
-      background: #f9f9f9; 
-      margin: 0;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
     }
     
-    .header {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      text-align: center;
+    .dark-header {
+      background-color: #000;
+      border-bottom: 1px solid #333;
     }
     
-    .nav-links a {
-      background: #007bff;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      border-radius: 5px;
-      margin: 0 10px;
+    .card-header {
+      background-color: #111;
+      border-bottom: 1px solid #333;
     }
     
-    .nav-links a:hover {
-      background: #0056b3;
+    .product-item {
+      transition: all 0.3s ease;
+      border-left: 4px solid #000;
     }
     
-    .form-container {
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
+    .product-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     }
     
-    input, textarea, button { 
-      width: 100%; 
-      padding: 12px; 
-      margin: 8px 0; 
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-    
-    button {
-      background: #28a745;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.2s;
-    }
-    
-    button:hover {
-      background: #218838;
-    }
-    
-    button:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-    
-    .product-list { 
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    
-    .product-item { 
-      background: #f8f9fa; 
-      padding: 15px; 
-      margin: 10px 0; 
-      border-radius: 5px; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center;
-      border-left: 4px solid #007bff;
-    }
-    
-    .product-info {
-      flex-grow: 1;
-    }
-    
-    .product-title {
-      font-weight: bold;
-      color: #333;
-    }
-    
-    .product-price {
-      color: #28a745;
-      font-size: 0.9em;
-    }
-    
-    .delete-btn {
-      background: #dc3545;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 3px;
-      cursor: pointer;
-      width: auto;
-      margin: 0;
-    }
-    
-    .delete-btn:hover {
-      background: #c82333;
+    input:focus, textarea:focus {
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+      border-color: #000;
     }
     
     .success-message {
-      background: #d4edda;
-      color: #155724;
-      padding: 10px;
-      border-radius: 5px;
-      margin: 10px 0;
-      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+      background-color: #f0fdf4;
+      color: #166534;
+      border-left: 4px solid #166534;
     }
     
     .error-message {
-      background: #f8d7da;
-      color: #721c24;
-      padding: 10px;
-      border-radius: 5px;
-      margin: 10px 0;
-      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+      background-color: #fef2f2;
+      color: #b91c1c;
+      border-left: 4px solid #b91c1c;
     }
     
-    .loading {
-      text-align: center;
-      color: #666;
-      font-style: italic;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
-    .no-products {
-      text-align: center;
-      color: #666;
-      padding: 20px;
+    .loading-spinner {
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .btn-black {
+      background-color: #000;
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-black:hover {
+      background-color: #111;
+      transform: translateY(-1px);
+    }
+    
+    .btn-delete {
+      background-color: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fee2e2;
+    }
+    
+    .btn-delete:hover {
+      background-color: #fee2e2;
     }
   </style>
 </head>
-<body>
-  <div class="header">
-    <h1>📝 Upload & Kelola Produk</h1>
-    <div class="nav-links">
-      <a href="/index.html">🏠 Lihat Produk</a>
+<body class="min-h-screen bg-gray-50">
+  <div class="dark-header text-white py-6 px-4 shadow-sm">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex items-center mb-4 md:mb-0">
+          <i class="fas fa-box-open text-2xl mr-3 text-gray-300"></i>
+          <h1 class="text-2xl font-bold text-gray-100">Upload Produk</h1>
+        </div>
+        <div class="nav-links">
+          <a href="/index.html" class="bg-gray-900 hover:bg-gray-800 px-5 py-2 rounded-md font-medium text-gray-200 transition-all duration-300 flex items-center">
+            <i class="fas fa-home mr-2 text-gray-300"></i> Lihat Produk
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-  
-  <div class="form-container">
-    <h2>➕ Tambah Produk Baru</h2>
-    
-    <div id="success-message" class="success-message"></div>
-    <div id="error-message" class="error-message"></div>
-    
-    <form id="product-form">
-      <label for="title">Judul Produk *</label>
-      <input type="text" id="title" placeholder="Masukkan judul produk" required />
-      
-      <label for="image">URL Gambar *</label>
-      <input type="url" id="image" placeholder="https://example.com/gambar.jpg" required />
-      
-      <label for="description">Deskripsi Produk</label>
-      <textarea id="description" placeholder="Deskripsi produk (opsional)" rows="4"></textarea>
-      
-      <label for="price">Harga Produk (Rp) *</label>
-      <input type="number" id="price" placeholder="50000" min="0" required />
-      
-      <button type="submit" id="submit-btn">
-        <span id="submit-text">➕ Tambah Produk</span>
-        <span id="submit-loading" style="display: none;">⏳ Menambahkan...</span>
-      </button>
-    </form>
-  </div>
 
-  <div class="product-list">
-    <h2>📦 Daftar Produk Saat Ini</h2>
-    <div id="products-container" class="loading">Memuat produk...</div>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8 border border-gray-200">
+      <div class="card-header px-6 py-4">
+        <h2 class="text-xl font-semibold text-gray-100 flex items-center">
+          <i class="fas fa-plus-circle mr-2 text-gray-300"></i> Tambah Produk Baru
+        </h2>
+      </div>
+      
+      <div class="p-6">
+        <div id="success-message" class="success-message px-4 py-3 rounded-lg mb-4 hidden"></div>
+        <div id="error-message" class="error-message px-4 py-3 rounded-lg mb-4 hidden"></div>
+        
+        <form id="product-form" class="space-y-4">
+          <div>
+            <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Nama Produk <span class="text-red-500">*</span></label>
+            <input type="text" id="title" placeholder="Masukkan judul produk" required 
+                   class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black transition-all duration-300" />
+          </div>
+          
+          <div>
+            <label for="image" class="block text-sm font-medium text-gray-700 mb-1">URL Gambar <span class="text-red-500">*</span></label>
+            <input type="url" id="image" placeholder="https://example.com/gambar.jpg" required 
+                   class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black transition-all duration-300" />
+          </div>
+          
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Produk</label>
+            <textarea id="description" placeholder="Deskripsi produk (opsional)" rows="4"
+                      class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black transition-all duration-300"></textarea>
+          </div>
+          
+          <div>
+            <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Harga Produk (Rp) <span class="text-red-500">*</span></label>
+            <input type="number" id="price" placeholder="50000" min="0" required 
+                   class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-1 focus:ring-black focus:border-black transition-all duration-300" />
+          </div>
+          
+          <button type="submit" id="submit-btn" 
+                  class="w-full btn-black font-medium py-3 px-4 rounded-md shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center">
+            <span id="submit-text" class="flex items-center">
+              <i class="fas fa-plus-circle mr-2"></i> Tambah Produk
+            </span>
+            <span id="submit-loading" class="hidden items-center">
+              <i class="fas fa-circle-notch loading-spinner mr-2"></i> Menambahkan...
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
+      <div class="card-header px-6 py-4">
+        <h2 class="text-xl font-semibold text-gray-100 flex items-center">
+          <i class="fas fa-boxes mr-2 text-gray-300"></i> Daftar Produk Saat Ini
+        </h2>
+      </div>
+      
+      <div class="p-6">
+        <div id="products-container" class="space-y-4">
+          <div class="text-center py-8">
+            <div class="flex justify-center mb-2">
+              <i class="fas fa-circle-notch loading-spinner text-gray-800 text-2xl"></i>
+            </div>
+            <p class="text-gray-600">Memuat produk...</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -197,20 +186,27 @@
       
       if (type === 'success') {
         successEl.textContent = message;
-        successEl.style.display = 'block';
-        errorEl.style.display = 'none';
-        setTimeout(() => successEl.style.display = 'none', 5000);
+        successEl.classList.remove('hidden');
+        errorEl.classList.add('hidden');
+        setTimeout(() => successEl.classList.add('hidden'), 5000);
       } else {
         errorEl.textContent = message;
-        errorEl.style.display = 'block';
-        successEl.style.display = 'none';
-        setTimeout(() => errorEl.style.display = 'none', 5000);
+        errorEl.classList.remove('hidden');
+        successEl.classList.add('hidden');
+        setTimeout(() => errorEl.classList.add('hidden'), 5000);
       }
     }
 
     async function loadProducts() {
       const container = document.getElementById('products-container');
-      container.innerHTML = '<div class="loading">⏳ Memuat produk...</div>';
+      container.innerHTML = `
+        <div class="text-center py-8">
+          <div class="flex justify-center mb-2">
+            <i class="fas fa-circle-notch loading-spinner text-gray-800 text-2xl"></i>
+          </div>
+          <p class="text-gray-600">Memuat produk...</p>
+        </div>
+      `;
 
       try {
         const response = await fetch('/api/products');
@@ -223,23 +219,46 @@
         container.innerHTML = '';
 
         if (!products || products.length === 0) {
-          container.innerHTML = '<div class="no-products">📦 Belum ada produk. Tambahkan produk pertama Anda!</div>';
+          container.innerHTML = `
+            <div class="text-center py-8">
+              <i class="fas fa-box-open text-gray-400 text-4xl mb-3"></i>
+              <p class="text-gray-600">Belum ada produk. Tambahkan produk pertama Anda!</p>
+            </div>
+          `;
           return;
         }
 
         products.forEach((product, index) => {
-          const div = document.createElement('div');
-          div.className = 'product-item';
-          
           const title = product.title || 'Produk Tanpa Judul';
           const price = product.price || 0;
+          const description = product.description || '';
+          const image = product.image || '';
+
+          const div = document.createElement('div');
+          div.className = 'product-item bg-white p-5 rounded-md shadow-sm hover:shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border border-gray-100';
           
           div.innerHTML = `
-            <div class="product-info">
-              <div class="product-title">${escapeHtml(title)}</div>
-              <div class="product-price">💰 Rp ${Number(price).toLocaleString('id-ID')}</div>
+            <div class="flex items-start space-x-4 w-full">
+              ${image ? `
+                <div class="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-md overflow-hidden">
+                  <img src="${escapeHtml(image)}" alt="${escapeHtml(title)}" class="w-full h-full object-cover">
+                </div>
+              ` : `
+                <div class="flex-shrink-0 w-16 h-16 bg-gray-50 rounded-md flex items-center justify-center">
+                  <i class="fas fa-box text-gray-400 text-xl"></i>
+                </div>
+              `}
+              
+              <div class="flex-1 min-w-0">
+                <h3 class="product-title text-lg font-medium text-gray-900 truncate">${escapeHtml(title)}</h3>
+                <p class="text-gray-800 font-semibold">Rp ${Number(price).toLocaleString('id-ID')}</p>
+                ${description ? `<p class="text-gray-500 text-sm mt-1 line-clamp-2">${escapeHtml(description)}</p>` : ''}
+              </div>
             </div>
-            <button class="delete-btn" onclick="deleteProduct(${index})">🗑️ Hapus</button>
+            
+            <button onclick="deleteProduct(${index})" class="btn-delete font-medium py-2 px-4 rounded-md transition-all duration-300 flex items-center whitespace-nowrap">
+              <i class="fas fa-trash-alt mr-2"></i> Hapus
+            </button>
           `;
           container.appendChild(div);
         });
@@ -247,8 +266,11 @@
       } catch (error) {
         console.error('Error loading products:', error);
         container.innerHTML = `
-          <div class="error-message" style="display: block;">
-            ❌ Gagal memuat produk: ${error.message}
+          <div class="error-message px-4 py-3 rounded-lg">
+            <div class="flex items-center">
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              <span>Gagal memuat produk: ${error.message}</span>
+            </div>
           </div>
         `;
       }
@@ -297,8 +319,8 @@
       const submitLoading = document.getElementById('submit-loading');
       
       submitBtn.disabled = true;
-      submitText.style.display = 'none';
-      submitLoading.style.display = 'inline';
+      submitText.classList.add('hidden');
+      submitLoading.classList.remove('hidden');
 
       try {
         const title = document.getElementById('title').value.trim();
@@ -344,12 +366,11 @@
       } finally {
         isSubmitting = false;
         submitBtn.disabled = false;
-        submitText.style.display = 'inline';
-        submitLoading.style.display = 'none';
+        submitText.classList.remove('hidden');
+        submitLoading.classList.add('hidden');
       }
     });
 
-    // Load products saat halaman dimuat
     document.addEventListener('DOMContentLoaded', loadProducts);
     loadProducts();
   </script>
