@@ -9,8 +9,8 @@ app.use(express.static(__dirname));
 app.use(bodyParser.json());
 
 // Baca semua produk
-app.get('/api/products', (req, res) => {
-    fs.readFile('products.json', 'utf8', (err, data) => {
+app.get('/api/product', (req, res) => {
+    fs.readFile('product.json', 'utf8', (err, data) => {
         if (err) return res.status(500).send(err);
         res.send(data);
     });
@@ -19,11 +19,11 @@ app.get('/api/products', (req, res) => {
 // Tambah produk baru
 app.post('/api/add-product', (req, res) => {
     const newProduct = req.body;
-    fs.readFile('products.json', 'utf8', (err, data) => {
+    fs.readFile('product.json', 'utf8', (err, data) => {
         if (err) return res.status(500).send(err);
         const products = JSON.parse(data);
         products.push(newProduct);
-        fs.writeFile('products.json', JSON.stringify(products, null, 2), (err) => {
+        fs.writeFile('product.json', JSON.stringify(products, null, 2), (err) => {
             if (err) return res.status(500).send(err);
             res.send({ success: true });
         });
@@ -33,11 +33,11 @@ app.post('/api/add-product', (req, res) => {
 // Hapus produk berdasarkan index
 app.post('/api/delete-product', (req, res) => {
     const { index } = req.body;
-    fs.readFile('products.json', 'utf8', (err, data) => {
+    fs.readFile('product.json', 'utf8', (err, data) => {
         if (err) return res.status(500).send(err);
         let products = JSON.parse(data);
         products.splice(index, 1); // hapus berdasarkan index
-        fs.writeFile('products.json', JSON.stringify(products, null, 2), (err) => {
+        fs.writeFile('product.json', JSON.stringify(products, null, 2), (err) => {
             if (err) return res.status(500).send(err);
             res.send({ success: true });
         });
